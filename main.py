@@ -1,5 +1,6 @@
 #  Copyright (c) 2019. Steven Taylor. All rights reserved.
 import sys
+import pyowm
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSignal
@@ -9,7 +10,9 @@ from weather_monitor_gui import Ui_MainWindow
 
 
 class Gui(QtWidgets.QMainWindow):
-    api = '4991dc8c09ba4024625dcce99ce8e881'
+    api_key = '4991dc8c09ba4024625dcce99ce8e881'
+    five_day = 'api.openweathermap.org/data/2.5/forecast?q=Leicester,UK'
+
     clock_kill_signal = pyqtSignal('PyQt_PyObject')
 
     def __init__(self):
@@ -25,6 +28,12 @@ class Gui(QtWidgets.QMainWindow):
         # Create clock thread
         self.clock = Clock(self.clock_kill_signal)
         self.clock.time_signal.connect(self.update_time_label)
+
+        # Authenticate api key
+        owm = pyowm.OWM(self.api_key)
+        leicester = owm.weather_at_place('Leicester, GB')
+        weather = leicester.get_weather()
+        print(weather.get_temperature('celsius')['temp'])
 
     def update_time_label(self, time):
         pass
