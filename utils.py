@@ -1,4 +1,4 @@
-#  Copyright (c) 2019. Steven Taylor All rights reserved
+#  Copyright (c) 2019. Steven Taylor. All rights reserved.
 import sys
 from datetime import datetime
 
