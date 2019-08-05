@@ -28,15 +28,31 @@ class Gui(QtWidgets.QMainWindow):
         # Create clock thread
         self.clock = Clock(self.clock_kill_signal)
         self.clock.time_signal.connect(self.update_time_label)
+        self.clock.start()
 
         # Authenticate api key
-        owm = pyowm.OWM(self.api_key)
-        leicester = owm.weather_at_place('Leicester, GB')
+        self.owm = pyowm.OWM(self.api_key)
+
+        # Set display with current weather
+        self.get_current_weather()
+
+    def get_current_weather(self):
+        # Get weather observation
+        leicester = self.owm.weather_at_place('Leicester, GB')
+        # Get weather object
         weather = leicester.get_weather()
-        print(weather.get_temperature('celsius')['temp'])
+
+        current_temp = str(weather.get_temperature('celsius')['temp'])
+        current_wind = str(weather.get_wind())
+        current_humidity = str(weather.get_humidity())
+        current_status = str(weather.get_detailed_status())
+
+        self.ui.textEdit.setText(f'Current temp is {current_temp}c with {current_humidity} humidity and'
+                                 f' {current_wind} winds and {current_status}')
 
     def update_time_label(self, time):
-        pass
+        self.ui.time_hours.display(time[:2])
+        self.ui.time_minutes.display(time[3:5])
 
     def quit(self):
         self.clock_kill_signal.emit(0)
