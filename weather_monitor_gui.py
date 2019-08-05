@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-#  Copyright (c) 2019. Steven Taylor. All rights reserved.
-
 # Form implementation generated from reading ui file 'C:\Users\steve\PycharmProjects\weather_monitor\weather_monitor_gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
@@ -31,9 +29,6 @@ class Ui_MainWindow(object):
         self.time_minutes.setMode(QtWidgets.QLCDNumber.Dec)
         self.time_minutes.setProperty("intValue", 55)
         self.time_minutes.setObjectName("time_minutes")
-        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit.setGeometry(QtCore.QRect(30, 150, 791, 381))
-        self.textEdit.setObjectName("textEdit")
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(30, 40, 791, 41))
         font = QtGui.QFont()
@@ -45,11 +40,22 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.day_radiobutton = QtWidgets.QRadioButton(self.centralwidget)
         self.day_radiobutton.setGeometry(QtCore.QRect(880, 150, 95, 20))
-        self.day_radiobutton.setChecked(True)
+        self.day_radiobutton.setChecked(False)
         self.day_radiobutton.setObjectName("day_radiobutton")
         self.week_radiobutton = QtWidgets.QRadioButton(self.centralwidget)
         self.week_radiobutton.setGeometry(QtCore.QRect(880, 190, 95, 20))
+        self.week_radiobutton.setChecked(True)
         self.week_radiobutton.setObjectName("week_radiobutton")
+        self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
+        self.tableWidget.setGeometry(QtCore.QRect(30, 110, 791, 471))
+        self.tableWidget.setAlternatingRowColors(True)
+        self.tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setRowCount(0)
+        self.tableWidget.horizontalHeader().setVisible(True)
+        self.tableWidget.horizontalHeader().setCascadingSectionResizes(True)
+        self.tableWidget.horizontalHeader().setHighlightSections(True)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1090, 26))
