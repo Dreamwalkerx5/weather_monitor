@@ -2,7 +2,7 @@
 import sys
 
 import pyowm
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import pyqtSignal, QTimer
 from PyQt5.QtWidgets import QTableWidgetItem
 
@@ -29,6 +29,12 @@ class Gui(QtWidgets.QMainWindow):
 
         self.ui.tableWidget.setHorizontalHeaderLabels(['Date & Time', 'Temp', 'Wind speed', 'Humidity',
                                                        'Sky'])
+        self.ui.tableWidget.setColumnWidth(0, 130)
+        self.ui.tableWidget.setColumnWidth(1, 50)
+        self.ui.tableWidget
+        self.ui.tableWidget.setColumnWidth(2, 90)
+        self.ui.tableWidget.setColumnWidth(3, 75)
+        self.ui.tableWidget.setColumnWidth(4, 150)
 
         # Create slots
         self.ui.quit_button.clicked.connect(self.quit)
@@ -89,11 +95,21 @@ class Gui(QtWidgets.QMainWindow):
                 sky = weather.get_detailed_status()
 
                 self.ui.tableWidget.setRowCount(row + 1)
-                self.ui.tableWidget.setItem(row, 0, QTableWidgetItem(day[:-6]))
-                self.ui.tableWidget.setItem(row, 1, QTableWidgetItem(temp))
-                self.ui.tableWidget.setItem(row, 2, QTableWidgetItem(wind[:-3]))
-                self.ui.tableWidget.setItem(row, 3, QTableWidgetItem(humidity))
-                self.ui.tableWidget.setItem(row, 4, QTableWidgetItem(sky))
+                day = QTableWidgetItem(day[:-6])
+                day.setTextAlignment(QtCore.Qt.AlignCenter)
+                self.ui.tableWidget.setItem(row, 0, day)
+                temp = QTableWidgetItem(temp)
+                temp.setTextAlignment(QtCore.Qt.AlignCenter)
+                self.ui.tableWidget.setItem(row, 1, temp)
+                wind = QTableWidgetItem(wind)
+                wind.setTextAlignment(QtCore.Qt.AlignCenter)
+                self.ui.tableWidget.setItem(row, 2, wind)
+                humidity = QTableWidgetItem(humidity)
+                humidity.setTextAlignment(QtCore.Qt.AlignCenter)
+                self.ui.tableWidget.setItem(row, 3, humidity)
+                sky = QTableWidgetItem(sky)
+                sky.setTextAlignment(QtCore.Qt.AlignCenter)
+                self.ui.tableWidget.setItem(row, 4, sky)
 
                 row += 1
                 forecast_string += f'Temp: {weather.get_temperature(unit="celsius")["temp"]}C  ' \
