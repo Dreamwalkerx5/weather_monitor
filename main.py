@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QTableWidgetItem
 
 from clock import Clock
 from weather_monitor_gui import Ui_MainWindow
+from weather_parser import WeatherParser
 
 # Some constants
 DAY = 1
@@ -78,6 +79,9 @@ class Gui(QtWidgets.QMainWindow):
         self.ui.lineEdit.setText(f'Current temp is {current_temp}C with {current_humidity} humidity and'
                                  f' {current_wind["speed"]} mph winds with {current_status}')
 
+        parser = WeatherParser()
+        current_weather = parser.get_current()
+
     def get_forecast(self):
         forecaster = self.owm.three_hours_forecast(self.location)
         forecast = forecaster.get_forecast()
@@ -94,8 +98,13 @@ class Gui(QtWidgets.QMainWindow):
                 humidity = str(weather.get_humidity()) + '%'
                 sky = weather.get_detailed_status()
 
+                date = day[:10]
+                time = day[11:-6]
+                # Reverse date
+                date = date[8:] + '-' + date[5:7] + '-' + date[:4]
+
                 self.ui.tableWidget.setRowCount(row + 1)
-                day = QTableWidgetItem(day[:-6])
+                day = QTableWidgetItem(date + ' ' + time)
                 day.setTextAlignment(QtCore.Qt.AlignCenter)
                 self.ui.tableWidget.setItem(row, 0, day)
                 temp = QTableWidgetItem(temp)
