@@ -15,11 +15,29 @@ class WeatherParser:
         self.city = 'Leicester, GB' if city is None else city
 
     def get_five_day(self):
+        forecasts = None
         # Get data from weather org as json
         data = requests.get(self.api_call_five_day + self.city).json()
 
+        if data['cod'] != '404':
+            forecasts = []
+            forecast_list = data['list']
+            for f in forecast_list:
+                forecast = CurrentWeather(f['weather'][0]['description'], f['main']['temp'],
+                                          f['main']['temp_min'], f['main']['temp_max'],
+                                          f['main']['humidity'], 0,
+                                          f['main']['pressure'], f['wind']['speed'],
+                                          f['wind']['deg'], f['clouds']['all'],
+                                          0, 0, f['dt_txt'])
+                forecasts.append(forecast)
+
+            return forecasts
+
+        else:
+            return forecasts
+
     def get_current(self):
-        forecast = []
+        forecast = None
         # Get data from weather org as json and convert to python objects
         data = requests.get(self.api_call_current + self.city).json()
 
@@ -30,7 +48,7 @@ class WeatherParser:
                                       data['main']['pressure'], data['wind']['speed'],
                                       data['wind']['deg'], data['clouds']['all'],
                                       data['sys']['sunrise'], data['sys']['sunset'])
-            print(forecast.sunset)
+
             return forecast
 
         else:
@@ -45,7 +63,9 @@ class WeatherParser:
 
 class CurrentWeather:
     def __init__(self, description='', temp=0, min_temp=0, max_temp=0, humidity=0, visibility=0,
-                 pressure=0, wind_speed=0, wind_direction=0, clouds=0, sunrise=0, sunset=0, datatime=None):
+                 pressure=0, wind_speed=0, wind_direction=0, clouds=0, sunrise=0, sunset=0,
+                 date_time=None):
+
         self.description = description
         self.temp = str(int(temp - 273.15))
         self.min_temp = str(int(min_temp - 273.15))
@@ -56,6 +76,7 @@ class CurrentWeather:
         self.wind_speed = wind_speed
         self.wind_direction = CurrentWeather.degrees_to_cardinal(wind_direction)
         self.clouds = clouds
+        self.date_time = date_time
 
         # Add one hour if British summer time
         if time.localtime().tm_isdst == 1:
@@ -73,3 +94,6 @@ class CurrentWeather:
                 "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
         ix = int((d + 11.25) / 22.5 - 0.02)
         return dirs[ix % 16]
+
+    def __str__(self):
+        return self.date_time

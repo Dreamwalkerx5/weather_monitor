@@ -66,21 +66,16 @@ class Gui(QtWidgets.QMainWindow):
         self.get_forecast()
 
     def get_current_weather(self):
-        # Get weather observation
-        leicester = self.owm.weather_at_place('Leicester, GB')
-        # Get weather object
-        weather = leicester.get_weather()
-
-        current_temp = str(int(weather.get_temperature('celsius')['temp']))
-        current_wind = weather.get_wind()
-        current_humidity = str(weather.get_humidity()) + '%'
-        current_status = str(weather.get_detailed_status())
-
-        self.ui.lineEdit.setText(f'Current temp is {current_temp}C with {current_humidity} humidity and'
-                                 f' {current_wind["speed"]} mph winds with {current_status}')
-
         parser = WeatherParser()
-        current_weather = parser.get_current()
+        w = parser.get_current()
+
+        if w is not None:
+            self.ui.lineEdit.setText(f'Current temp is {w.temp}C with {w.humidity}% humidity and'
+                                     f' {w.wind_speed} mph winds from the {w.wind_direction}'
+                                     f' with {w.description}')
+
+        else:
+            self.ui.lineEdit.setText('Sorry, that city was not found.')
 
     def get_forecast(self):
         forecaster = self.owm.three_hours_forecast(self.location)
@@ -129,6 +124,16 @@ class Gui(QtWidgets.QMainWindow):
         else:
             pass
 
+        if self.current_view == WEEK:
+            parser = WeatherParser(self.location)
+            w = parser.get_five_day()
+
+            if w is not None:
+                for temp in w:
+                    print(temp)
+
+        else:
+            pass
 
 
 
