@@ -28,7 +28,9 @@ class WeatherParser:
                                           f['main']['humidity'], 0,
                                           f['main']['pressure'], f['wind']['speed'],
                                           f['wind']['deg'], f['clouds']['all'],
-                                          0, 0, f['dt_txt'])
+                                          0, 0, f['dt_txt'],
+                                          rain_amount=f['rain']['3h'] if 'rain' in f and '3h' in
+                                          f['rain'] else 0)
                 forecasts.append(forecast)
 
             return forecasts
@@ -55,6 +57,10 @@ class WeatherParser:
             return forecast
 
     @staticmethod
+    def get_attribute(data, attribute, default_value):
+        return data.get(attribute) or default_value
+
+    @staticmethod
     def save_json(json_data):
         # Save data to disk as json
         with open('data_file.json', 'w') as write_file:
@@ -64,7 +70,7 @@ class WeatherParser:
 class CurrentWeather:
     def __init__(self, description='', temp=0, min_temp=0, max_temp=0, humidity=0, visibility=0,
                  pressure=0, wind_speed=0, wind_direction=0, clouds=0, sunrise=0, sunset=0,
-                 date_time=None):
+                 date_time=None, rain_amount=0):
 
         self.description = description
         self.temp = str(int(temp - 273.15))
@@ -77,6 +83,7 @@ class CurrentWeather:
         self.wind_direction = CurrentWeather.degrees_to_cardinal(wind_direction)
         self.clouds = clouds
         self.date_time = date_time
+        self.rain_amount = rain_amount
 
         # Add one hour if British summer time
         if time.localtime().tm_isdst == 1:

@@ -1,7 +1,6 @@
 #  Copyright (c) 2019. Steven Taylor. All rights reserved.
 import sys
 
-import pyowm
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import pyqtSignal, QTimer
 from PyQt5.QtWidgets import QTableWidgetItem
@@ -47,9 +46,6 @@ class Gui(QtWidgets.QMainWindow):
         self.clock.time_signal.connect(self.update_time_label)
         self.clock.start()
 
-        # Authenticate api key
-        self.owm = pyowm.OWM(self.api_key)
-
         # Set display with current weather
         self.get_current_weather()
 
@@ -78,64 +74,45 @@ class Gui(QtWidgets.QMainWindow):
             self.ui.lineEdit.setText('Sorry, that city was not found.')
 
     def get_forecast(self):
-        forecaster = self.owm.three_hours_forecast(self.location)
-        forecast = forecaster.get_forecast()
-        weather_list = forecast.get_weathers()
-
-        if self.current_view == WEEK:
-            forecast_string = ''
-
-            row = 0
-            for weather in weather_list:
-                day = weather.get_reference_time('iso')
-                temp = str(int(weather.get_temperature(unit="celsius")["temp"]))
-                wind = str(weather.get_wind()['speed'])
-                humidity = str(weather.get_humidity()) + '%'
-                sky = weather.get_detailed_status()
-
-                date = day[:10]
-                time = day[11:-6]
-                # Reverse date
-                date = date[8:] + '-' + date[5:7] + '-' + date[:4]
-
-                self.ui.tableWidget.setRowCount(row + 1)
-                day = QTableWidgetItem(date + ' ' + time)
-                day.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.ui.tableWidget.setItem(row, 0, day)
-                temp = QTableWidgetItem(temp)
-                temp.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.ui.tableWidget.setItem(row, 1, temp)
-                wind = QTableWidgetItem(wind)
-                wind.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.ui.tableWidget.setItem(row, 2, wind)
-                humidity = QTableWidgetItem(humidity)
-                humidity.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.ui.tableWidget.setItem(row, 3, humidity)
-                sky = QTableWidgetItem(sky)
-                sky.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.ui.tableWidget.setItem(row, 4, sky)
-
-                row += 1
-                forecast_string += f'Temp: {weather.get_temperature(unit="celsius")["temp"]}C  ' \
-                                   f'Humidity: {weather.get_humidity()}  ' \
-                                   f'Winds: {weather.get_wind()["speed"]}mph  ' \
-                                   f'Sky: {weather.get_detailed_status()}\n'
-
-        else:
-            pass
-
         if self.current_view == WEEK:
             parser = WeatherParser(self.location)
             w = parser.get_five_day()
 
             if w is not None:
-                for temp in w:
-                    print(temp)
+                row = 0
+                for f in w:
+                    day = f.date_time
+                    temp = f.temp
+                    wind = str(int(f.wind_speed)) + ' mph'
+                    humidity = str(f.humidity) + '%'
+                    sky = f.description
+
+                    date = day[:10]
+                    time = day[11:-6]
+                    # Reverse date
+                    date = date[8:] + '-' + date[5:7] + '-' + date[:4]
+
+                    self.ui.tableWidget.setRowCount(row + 1)
+                    day = QTableWidgetItem(date + ' ' + time)
+                    day.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.ui.tableWidget.setItem(row, 0, day)
+                    temp = QTableWidgetItem(temp)
+                    temp.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.ui.tableWidget.setItem(row, 1, temp)
+                    wind = QTableWidgetItem(wind)
+                    wind.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.ui.tableWidget.setItem(row, 2, wind)
+                    humidity = QTableWidgetItem(humidity)
+                    humidity.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.ui.tableWidget.setItem(row, 3, humidity)
+                    sky = QTableWidgetItem(sky)
+                    sky.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.ui.tableWidget.setItem(row, 4, sky)
+
+                    row += 1
 
         else:
             pass
-
-
 
     def update_time_label(self, time):
         self.ui.time_hours.display(time[:2])
