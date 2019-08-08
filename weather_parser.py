@@ -43,7 +43,7 @@ class WeatherParser:
         forecast = None
         # Get data from weather org as json and convert to python objects
         data = requests.get(self.api_call_current + self.city).json()
-        WeatherParser.save_json(data)
+
         if data['cod'] != '404':
             forecast = CurrentWeather(data['weather'][0]['description'], data['main']['temp'],
                                       data['main']['temp_min'], data['main']['temp_max'],
