@@ -1,0 +1,43 @@
+{
+    "coord": {
+        "lon": -1.13,
+        "lat": 52.64
+    },
+    "weather": [
+        {
+            "id": 801,
+            "main": "Clouds",
+            "description": "few clouds",
+            "icon": "02d"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 296.04,
+        "pressure": 1008,
+        "humidity": 46,
+        "temp_min": 295.37,
+        "temp_max": 297.04
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 2.6,
+        "deg": 150
+    },
+    "clouds": {
+        "all": 20
+    },
+    "dt": 1565285569,
+    "sys": {
+        "type": 1,
+        "id": 1430,
+        "message": 0.0071,
+        "country": "GB",
+        "sunrise": 1565238867,
+        "sunset": 1565293562
+    },
+    "timezone": 3600,
+    "id": 2644668,
+    "name": "Leicester",
+    "cod": 200
+}

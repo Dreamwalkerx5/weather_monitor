@@ -157,4 +157,4 @@ gui.show()
 app.exec()
 
 print('Quit...')
-sys.exit()
+sys.exit(0)
