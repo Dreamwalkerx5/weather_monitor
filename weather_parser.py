@@ -27,7 +27,8 @@ class WeatherParser:
                                           f['main']['temp_min'], f['main']['temp_max'],
                                           f['main']['humidity'], 0,
                                           f['main']['pressure'], f['wind']['speed'],
-                                          f['wind']['deg'], f['clouds']['all'],
+                                          f['wind']['deg'],
+                                          f['clouds']['all'],
                                           0, 0, f['dt_txt'],
                                           rain_amount=f['rain']['3h'] if 'rain' in f and '3h' in
                                           f['rain'] else 0)
@@ -42,13 +43,14 @@ class WeatherParser:
         forecast = None
         # Get data from weather org as json and convert to python objects
         data = requests.get(self.api_call_current + self.city).json()
-
+        WeatherParser.save_json(data)
         if data['cod'] != '404':
             forecast = CurrentWeather(data['weather'][0]['description'], data['main']['temp'],
                                       data['main']['temp_min'], data['main']['temp_max'],
                                       data['main']['humidity'], data['visibility'],
                                       data['main']['pressure'], data['wind']['speed'],
-                                      data['wind']['deg'], data['clouds']['all'],
+                                      data['wind']['deg'] if 'deg' in data['wind'] else 0,
+                                      data['clouds']['all'],
                                       data['sys']['sunrise'], data['sys']['sunset'])
 
             return forecast

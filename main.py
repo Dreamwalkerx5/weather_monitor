@@ -1,5 +1,7 @@
 #  Copyright (c) 2019. Steven Taylor. All rights reserved.
 import sys
+from datetime import datetime
+from time import strftime
 
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import pyqtSignal, QTimer
@@ -29,7 +31,7 @@ class Gui(QtWidgets.QMainWindow):
 
         self.ui.tableWidget.setHorizontalHeaderLabels(['Date & Time', 'Temp', 'Wind speed', 'Humidity',
                                                        'Sky'])
-        self.ui.tableWidget.setColumnWidth(0, 130)
+        self.ui.tableWidget.setColumnWidth(0, 135)
         self.ui.tableWidget.setColumnWidth(1, 50)
         self.ui.tableWidget
         self.ui.tableWidget.setColumnWidth(2, 90)
@@ -68,12 +70,15 @@ class Gui(QtWidgets.QMainWindow):
         if w is not None:
             self.ui.lineEdit.setText(f'Current temp is {w.temp}C with {w.humidity}% humidity and'
                                      f' {w.wind_speed} mph winds from the {w.wind_direction}'
-                                     f' with {w.description}')
+                                     f' with {w.description}. Sunset {w.sunset}')
 
         else:
             self.ui.lineEdit.setText('Sorry, that city was not found.')
 
     def get_forecast(self):
+        today = datetime.today()
+        # today = today.strftime("%d")
+
         if self.current_view == WEEK:
             parser = WeatherParser(self.location)
             w = parser.get_five_day()
@@ -88,9 +93,20 @@ class Gui(QtWidgets.QMainWindow):
                     sky = f.description
 
                     date = day[:10]
-                    time = day[11:-6]
-                    # Reverse date
-                    date = date[8:] + '-' + date[5:7] + '-' + date[:4]
+                    time = day[11:-3]
+                    # Convert date string to datetime object
+                    date = datetime.strptime(date, '%Y-%m-%d')
+                    # Convert time string to datetime object
+                    time = datetime.strptime(time, '%H:%M')
+                    # Convert datetime object new string in 12h format
+                    time = time.strftime('%I:%M %p')
+
+                    # Convert date to day of week
+                    if date.day == today.day:
+                        date = "Today"
+                    else:
+                        # Convert date to week day
+                        date = date.strftime('%A')
 
                     self.ui.tableWidget.setRowCount(row + 1)
                     day = QTableWidgetItem(date + ' ' + time)
