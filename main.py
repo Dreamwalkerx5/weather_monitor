@@ -43,6 +43,7 @@ class Gui(QtWidgets.QMainWindow):
         self.ui.quit_button.clicked.connect(self.quit)
         self.ui.day_radiobutton.clicked.connect(self.change_view)
         self.ui.week_radiobutton.clicked.connect(self.change_view)
+        
 
         # Create clock thread
         self.clock = Clock(self.clock_kill_signal)
@@ -63,6 +64,10 @@ class Gui(QtWidgets.QMainWindow):
 
         # Set up forecast display
         self.get_forecast()
+
+    def update_city(self, result):
+        # city = self.ui.lineEdit.getText()
+        print('lineEdit...')
 
     def get_current_weather(self):
         parser = WeatherParser()
