@@ -14,6 +14,9 @@ class WeatherParser:
     def __init__(self, city=None):
         self.city = 'Leicester, GB' if city is None else city
 
+    def change_city(self, new_city):
+        self.city = new_city
+
     def get_five_day(self):
         forecasts = None
         # Get data from weather org as json

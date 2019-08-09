@@ -33,7 +33,6 @@ class Gui(QtWidgets.QMainWindow):
                                                        'Description', 'Rain fall'])
         self.ui.tableWidget.setColumnWidth(0, 135)
         self.ui.tableWidget.setColumnWidth(1, 50)
-        self.ui.tableWidget
         self.ui.tableWidget.setColumnWidth(2, 90)
         self.ui.tableWidget.setColumnWidth(3, 75)
         self.ui.tableWidget.setColumnWidth(4, 150)
@@ -43,15 +42,13 @@ class Gui(QtWidgets.QMainWindow):
         self.ui.quit_button.clicked.connect(self.quit)
         self.ui.day_radiobutton.clicked.connect(self.change_view)
         self.ui.week_radiobutton.clicked.connect(self.change_view)
-        
+        self.ui.city_edit.returnPressed.connect(self.update_city)
+        self.ui.city_button.clicked.connect(self.update_city)
 
         # Create clock thread
         self.clock = Clock(self.clock_kill_signal)
         self.clock.time_signal.connect(self.update_time_label)
         self.clock.start()
-
-        # Set display with current weather
-        self.get_current_weather()
 
         # Schedule current weather update
         self.current_weather_timer = QTimer()
@@ -61,16 +58,20 @@ class Gui(QtWidgets.QMainWindow):
         # Set some variables
         self.current_view = WEEK
         self.location = 'Leicester, GB'
+        self.ui.city_edit.setText(self.location)
 
+        # Set display with current weather
+        self.get_current_weather()
         # Set up forecast display
         self.get_forecast()
 
-    def update_city(self, result):
-        # city = self.ui.lineEdit.getText()
-        print('lineEdit...')
+    def update_city(self):
+        self.location = self.ui.city_edit.text()
+        self.get_current_weather()
+        self.get_forecast()
 
     def get_current_weather(self):
-        parser = WeatherParser()
+        parser = WeatherParser(self.location)
         w = parser.get_current()
 
         if w is not None:
