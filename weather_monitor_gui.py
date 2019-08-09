@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\steve\PycharmProjects\weather_monitor\weather_monitor_gui.ui'
+# Form implementation generated from reading ui file 'C:\Users\steve\PycharmProjects\weather_monitor2\weather_monitor_gui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -50,7 +52,8 @@ class Ui_MainWindow(object):
         self.tableWidget.setGeometry(QtCore.QRect(30, 110, 791, 471))
         self.tableWidget.setAlternatingRowColors(True)
         self.tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setGridStyle(QtCore.Qt.DashLine)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setRowCount(0)
         self.tableWidget.horizontalHeader().setVisible(True)
@@ -76,4 +79,3 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Current weather"))
         self.day_radiobutton.setText(_translate("MainWindow", "Day"))
         self.week_radiobutton.setText(_translate("MainWindow", "Week"))
-

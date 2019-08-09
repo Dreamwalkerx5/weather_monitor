@@ -143,8 +143,11 @@
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
     </property>
+    <property name="gridStyle">
+     <enum>Qt::DashLine</enum>
+    </property>
     <property name="columnCount">
-     <number>5</number>
+     <number>6</number>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>true</bool>
@@ -155,6 +158,7 @@
     <attribute name="horizontalHeaderHighlightSections">
      <bool>true</bool>
     </attribute>
+    <column/>
     <column/>
     <column/>
     <column/>
