@@ -30,7 +30,7 @@ class Gui(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.tableWidget.setHorizontalHeaderLabels(['Date & Time', 'Temp', 'Wind speed', 'Humidity',
-                                                       'Sky'])
+                                                       'Description', 'Rain fall'])
         self.ui.tableWidget.setColumnWidth(0, 135)
         self.ui.tableWidget.setColumnWidth(1, 50)
         self.ui.tableWidget
@@ -92,7 +92,7 @@ class Gui(QtWidgets.QMainWindow):
                     wind = str(int(f.wind_speed)) + ' mph'
                     humidity = str(f.humidity) + '%'
                     sky = f.description
-                    rain_fall = f.rain_amount
+                    rain_fall = str(f.rain_amount) + ' inches'
 
                     date = day[:10]
                     time = day[11:-3]
