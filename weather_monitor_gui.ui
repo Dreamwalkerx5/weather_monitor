@@ -165,7 +165,7 @@
     <column/>
     <column/>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="city_edit">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -181,6 +181,19 @@
     </property>
     <property name="toolTip">
      <string>City</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="city_button">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>610</y>
+      <width>93</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Update city</string>
     </property>
    </widget>
   </widget>
