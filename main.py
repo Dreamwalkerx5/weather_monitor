@@ -37,6 +37,7 @@ class Gui(QtWidgets.QMainWindow):
         self.ui.tableWidget.setColumnWidth(2, 90)
         self.ui.tableWidget.setColumnWidth(3, 75)
         self.ui.tableWidget.setColumnWidth(4, 150)
+        self.ui.tableWidget.setColumnWidth(5, 150)
 
         # Create slots
         self.ui.quit_button.clicked.connect(self.quit)
@@ -91,6 +92,7 @@ class Gui(QtWidgets.QMainWindow):
                     wind = str(int(f.wind_speed)) + ' mph'
                     humidity = str(f.humidity) + '%'
                     sky = f.description
+                    rain_fall = f.rain_amount
 
                     date = day[:10]
                     time = day[11:-3]
@@ -124,6 +126,9 @@ class Gui(QtWidgets.QMainWindow):
                     sky = QTableWidgetItem(sky)
                     sky.setTextAlignment(QtCore.Qt.AlignCenter)
                     self.ui.tableWidget.setItem(row, 4, sky)
+                    rain_fall = QTableWidgetItem(rain_fall)
+                    rain_fall.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.ui.tableWidget.setItem(row, 5, rain_fall)
 
                     row += 1
 
